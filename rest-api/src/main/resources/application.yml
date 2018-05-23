@@ -1,0 +1,20 @@
+# set default profile to 'local'
+spring:
+  profiles:
+    active: local
+---
+# Database setting
+spring:
+  profiles: local
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3306/rest_api
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    
+# Server setting
+server:
+  port: 8085
