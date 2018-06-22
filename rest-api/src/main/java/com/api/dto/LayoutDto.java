@@ -2,22 +2,20 @@ package com.api.dto;
 
 import java.util.Set;
 
-import org.springframework.hateoas.ResourceSupport;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class LayoutDTO extends ResourceSupport {
+public class LayoutDto {
 
 	private Integer layoutId;
 	private String layoutName;
 	@JsonIgnore
-	private Set<CompanyDTO> companies;
+	private Set<CompanyDto> companies;
 
-	public LayoutDTO() {
+	public LayoutDto() {
 		super();
 	}
 
-	public LayoutDTO(Integer layoutId, String layoutName, Set<CompanyDTO> companies) {
+	public LayoutDto(Integer layoutId, String layoutName, Set<CompanyDto> companies) {
 		super();
 		this.layoutId = layoutId;
 		this.layoutName = layoutName;
@@ -40,11 +38,11 @@ public class LayoutDTO extends ResourceSupport {
 		this.layoutName = layoutName;
 	}
 
-	public Set<CompanyDTO> getCompanies() {
+	public Set<CompanyDto> getCompanies() {
 		return companies;
 	}
 
-	public void setCompanies(Set<CompanyDTO> companies) {
+	public void setCompanies(Set<CompanyDto> companies) {
 		this.companies = companies;
 	}
 

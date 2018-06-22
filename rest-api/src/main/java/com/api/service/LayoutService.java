@@ -2,19 +2,18 @@ package com.api.service;
 
 import java.util.List;
 
-import com.api.dto.LayoutDTO;
-import com.api.exception.BadRequestException;
+import com.api.dto.LayoutDto;
 
 public interface LayoutService {
 
-	List<LayoutDTO> getAllLayouts() throws BadRequestException;
+	List<LayoutDto> getAllLayouts();
 
-	LayoutDTO getLayout(Integer layoutId) throws BadRequestException;
+	LayoutDto getLayout(Integer layoutId);
 
-	LayoutDTO createLayout(LayoutDTO layoutDTO) throws BadRequestException;
+	LayoutDto createLayout(LayoutDto layoutDto);
 
-	LayoutDTO updateLayout(LayoutDTO layoutDTO) throws BadRequestException;
+	LayoutDto updateLayout(LayoutDto layoutDto);
 
-	void deleteLayout(Integer layoutId) throws BadRequestException;
+	void deleteLayout(Integer layoutId);
 
 }

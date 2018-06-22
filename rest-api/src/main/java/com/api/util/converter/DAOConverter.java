@@ -2,12 +2,12 @@ package com.api.util.converter;
 
 import org.modelmapper.ModelMapper;
 
-import com.api.dto.CompanyDTO;
-import com.api.dto.DepartmentDTO;
-import com.api.dto.DomainDTO;
-import com.api.dto.EmployeeDTO;
-import com.api.dto.LayoutDTO;
-import com.api.dto.ProjectDTO;
+import com.api.dto.CompanyDto;
+import com.api.dto.DepartmentDto;
+import com.api.dto.DomainDto;
+import com.api.dto.EmployeeDto;
+import com.api.dto.LayoutDto;
+import com.api.dto.ProjectDto;
 import com.api.entity.Company;
 import com.api.entity.Department;
 import com.api.entity.Domain;
@@ -20,33 +20,33 @@ public class DAOConverter {
 	// to fix bug: "matches multiple source property hierarchies"
 	// use: modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
-	public static Company convertCompany(CompanyDTO companyDTO) {
+	public static Company convertCompany(CompanyDto companyDto) {
 		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(companyDTO, Company.class);
+		return modelMapper.map(companyDto, Company.class);
 	}
 
-	public static Department convertDepartment(DepartmentDTO departmentDTO) {
+	public static Department convertDepartment(DepartmentDto departmentDto) {
 		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(departmentDTO, Department.class);
+		return modelMapper.map(departmentDto, Department.class);
 	}
 
-	public static Domain convertDomain(DomainDTO domainDTO) {
+	public static Domain convertDomain(DomainDto domainDto) {
 		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(domainDTO, Domain.class);
+		return modelMapper.map(domainDto, Domain.class);
 	}
 
-	public static Employee convertEmployee(EmployeeDTO employeeDTO) {
+	public static Employee convertEmployee(EmployeeDto employeeDto) {
 		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(employeeDTO, Employee.class);
+		return modelMapper.map(employeeDto, Employee.class);
 	}
 
-	public static Layout convertLayout(LayoutDTO layoutDTO) {
+	public static Layout convertLayout(LayoutDto layoutDto) {
 		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(layoutDTO, Layout.class);
+		return modelMapper.map(layoutDto, Layout.class);
 	}
 
-	public static Project convertProject(ProjectDTO projectDTO) {
+	public static Project convertProject(ProjectDto projectDto) {
 		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(projectDTO, Project.class);
+		return modelMapper.map(projectDto, Project.class);
 	}
 }

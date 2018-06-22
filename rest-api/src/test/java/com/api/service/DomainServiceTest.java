@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.api.dto.DomainDTO;
+import com.api.dto.DomainDto;
 import com.api.entity.Domain;
 import com.api.repository.DomainRepository;
 import com.api.service.impl.DomainServiceImpl;
@@ -44,7 +44,7 @@ public class DomainServiceTest {
 		List<Domain> domains = Arrays.asList(domainA, domainB);
 
 		when(domainRepository.findAll()).thenReturn(domains);
-		List<DomainDTO> domainDTOs = domainServiceImpl.getAllDomains();
+		List<DomainDto> domainDTOs = domainServiceImpl.getAllDomains();
 		assertEquals(domains.size(), domainDTOs.size());
 	}
 
@@ -53,7 +53,7 @@ public class DomainServiceTest {
 		Domain domain = new Domain(1, "Domain A");
 
 		when(domainRepository.findOne(domain.getId())).thenReturn(domain);
-		DomainDTO domainDTO = domainServiceImpl.getDomain(domain.getId());
+		DomainDto domainDTO = domainServiceImpl.getDomain(domain.getId());
 		assertEquals(domain.getId(), domainDTO.getDomainId());
 		assertEquals(domain.getDomainName(), domainDTO.getDomainName());
 	}
@@ -64,7 +64,7 @@ public class DomainServiceTest {
 
 		when(domainRepository.save(domain)).thenReturn(domain);
 		
-		DomainDTO domainDTO = domainServiceImpl.createDomain(DTOConverter.convertDomain(domain));
+		DomainDto domainDTO = domainServiceImpl.createDomain(DTOConverter.convertDomain(domain));
 
 		assertEquals(domain.getDomainName(), domainDTO.getDomainName());
 	}

@@ -1,25 +1,21 @@
 package com.api.service.impl;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Service;
 
-import com.api.dto.DepartmentDTO;
-import com.api.dto.EmployeeDTO;
+import com.api.dto.DepartmentDto;
+import com.api.dto.EmployeeDto;
 import com.api.entity.Department;
 import com.api.entity.Employee;
 import com.api.exception.BadRequestException;
+import com.api.exception.NotFoundException;
 import com.api.repository.DepartmentRepository;
 import com.api.repository.EmployeeRepository;
-import com.api.rest.DepartmentController;
 import com.api.service.DepartmentService;
 import com.api.util.NumberUtils;
 import com.api.util.converter.DAOConverter;
@@ -34,14 +30,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
-	public Resource<DepartmentDTO> getDepartResource(DepartmentDTO departmentDTO) {
-		return new Resource<>(departmentDTO,
-				linkTo(methodOn(DepartmentController.class).getDepartment(departmentDTO.getDepartmentId()))
-						.withSelfRel());
-	}
-
 	@Override
-	public List<DepartmentDTO> getAllDepartments() throws BadRequestException {
+	public List<DepartmentDto> getAllDepartments() {
 		List<Department> departments = departmentRepository.findAll();
 		if (departments.isEmpty()) {
 			return new ArrayList<>();
@@ -51,59 +41,59 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public DepartmentDTO getDepartment(Integer departmentId) throws BadRequestException {
+	public DepartmentDto getDepartment(Integer departmentId) {
 		if (NumberUtils.isEmpty(departmentId)) {
-			throw new BadRequestException("Unidentified departmentId");
+			throw new BadRequestException("Unidentified departmentId!");
 		}
 
 		Department department = departmentRepository.findOne(departmentId);
 		if (Objects.isNull(department)) {
-			throw new BadRequestException("Department with " + departmentId + " is no exists.");
+			throw new NotFoundException("Department", "departmentId", departmentId);
 		}
 		return DTOConverter.convertDepartment(department);
 	}
 
 	@Override
-	public DepartmentDTO createDepartment(DepartmentDTO departmentDTO) throws BadRequestException {
-		return DTOConverter.convertDepartment(departmentRepository.save(DAOConverter.convertDepartment(departmentDTO)));
+	public DepartmentDto createDepartment(DepartmentDto departmentDto) {
+		return DTOConverter.convertDepartment(departmentRepository.save(DAOConverter.convertDepartment(departmentDto)));
 	}
 
 	@Override
-	public DepartmentDTO updateDepartment(DepartmentDTO departmentDTO) throws BadRequestException {
-		Integer departmentId = departmentDTO.getDepartmentId();
+	public DepartmentDto updateDepartment(DepartmentDto departmentDto) {
+		Integer departmentId = departmentDto.getDepartmentId();
 
 		if (NumberUtils.isEmpty(departmentId)) {
-			throw new BadRequestException("Unidentified departmentId");
+			throw new BadRequestException("Unidentified departmentId!");
 		}
 
 		Department department = departmentRepository.findOne(departmentId);
 		if (Objects.isNull(department)) {
-			throw new BadRequestException("Department with " + departmentId + " is no longer exists.");
+			throw new NotFoundException("Department", "departmentId", departmentId);
 		}
 
-		department.setId(departmentDTO.getDepartmentId());
-		department.setDepartName(departmentDTO.getDepartName());
-		department.setDescription(departmentDTO.getDescription());
-		department.setEmail(departmentDTO.getEmail());
-		department.setCompany(DAOConverter.convertCompany(departmentDTO.getCompany()));
+		department.setId(departmentDto.getDepartmentId());
+		department.setDepartName(departmentDto.getDepartName());
+		department.setDescription(departmentDto.getDescription());
+		department.setEmail(departmentDto.getEmail());
+		department.setCompany(DAOConverter.convertCompany(departmentDto.getCompany()));
 		return DTOConverter.convertDepartment(departmentRepository.save(department));
 	}
 
 	@Override
-	public void deleteDepartment(Integer departmentId) throws BadRequestException {
+	public void deleteDepartment(Integer departmentId) {
 		if (NumberUtils.isEmpty(departmentId)) {
-			throw new BadRequestException("Unidentified departmentId");
+			throw new BadRequestException("Unidentified departmentId!");
 		}
 
 		Department department = departmentRepository.findOne(departmentId);
 		if (Objects.isNull(department)) {
-			throw new BadRequestException("Department with " + departmentId + " is no exists.");
+			throw new NotFoundException("Department", "departmentId", departmentId);
 		}
 		departmentRepository.delete(departmentId);
 	}
 
 	@Override
-	public List<EmployeeDTO> getAllEmployees(Integer departmentId) throws BadRequestException {
+	public List<EmployeeDto> getAllEmployees(Integer departmentId) {
 		List<Employee> employees = employeeRepository.findAllByDepartmentId(departmentId);
 		if (employees.isEmpty()) {
 			return new ArrayList<>();
@@ -112,89 +102,89 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public EmployeeDTO getEmployee(Integer departmentId, Integer employeeId) throws BadRequestException {
+	public EmployeeDto getEmployee(Integer departmentId, Integer employeeId) {
 		if (NumberUtils.isEmpty(departmentId)) {
-			throw new BadRequestException("Unidentified departmentId");
+			throw new BadRequestException("Unidentified departmentId!");
 		}
 
 		if (NumberUtils.isEmpty(employeeId)) {
-			throw new BadRequestException("Unidentified employeeId");
+			throw new BadRequestException("Unidentified employeeId!");
 		}
 
 		Department department = departmentRepository.findOne(departmentId);
 		if (Objects.isNull(department)) {
-			throw new BadRequestException("Department with " + departmentId + " is no exists.");
+			throw new NotFoundException("Department", "departmentId", departmentId);
 		}
 
 		Employee employee = employeeRepository.findOneByDepartmentId(departmentId, employeeId);
 		if (Objects.isNull(employee)) {
-			throw new BadRequestException("Employee with " + employeeId + " is no exists.");
+			throw new NotFoundException("Employee", "employeeId", employeeId);
 		}
 		return DTOConverter.convertEmployee(employee);
 	}
 
 	@Override
-	public EmployeeDTO createEmployee(Integer departmentId, EmployeeDTO employeeDTO) throws BadRequestException {
+	public EmployeeDto createEmployee(Integer departmentId, EmployeeDto employeeDto) {
 		if (NumberUtils.isEmpty(departmentId)) {
-			throw new BadRequestException("Unidentified departmentId");
+			throw new BadRequestException("Unidentified departmentId!");
 		}
 
 		Department department = departmentRepository.findOne(departmentId);
 		if (Objects.isNull(department)) {
-			throw new BadRequestException("Department with " + departmentId + " is no exists.");
+			throw new NotFoundException("Department", "departmentId", departmentId);
 		}
 
-		employeeDTO.setDepartment(DTOConverter.convertDepartment(department));
-		return DTOConverter.convertEmployee(employeeRepository.save(DAOConverter.convertEmployee(employeeDTO)));
+		employeeDto.setDepartment(DTOConverter.convertDepartment(department));
+		return DTOConverter.convertEmployee(employeeRepository.save(DAOConverter.convertEmployee(employeeDto)));
 
 	}
 
 	@Override
-	public EmployeeDTO updateEmployee(Integer departmentId, EmployeeDTO employeeDTO) throws BadRequestException {
+	public EmployeeDto updateEmployee(Integer departmentId, EmployeeDto employeeDto) {
 		if (NumberUtils.isEmpty(departmentId)) {
-			throw new BadRequestException("Unidentified departmentId");
+			throw new BadRequestException("Unidentified departmentId!");
 		}
 
 		Department department = departmentRepository.findOne(departmentId);
 		if (Objects.isNull(department)) {
-			throw new BadRequestException("Department with " + departmentId + " is no exists.");
+			throw new NotFoundException("Department", "departmentId", departmentId);
 		}
 
-		Integer employeeId = employeeDTO.getEmployeeId();
+		Integer employeeId = employeeDto.getEmployeeId();
 		Employee employee = employeeRepository.findOne(employeeId);
 		if (Objects.isNull(employee)) {
-			throw new BadRequestException("Employee with " + employeeId + " is no exists.");
+			throw new NotFoundException("Employee", "employeeId", employeeId);
 		}
 
-		employee.setEmployeeName(employeeDTO.getEmployeeName());
-		employee.setBirthday(employeeDTO.getBirthday());
-		employee.setSex(employeeDTO.getSex());
-		employee.setPhone(employeeDTO.getPhone());
-		employee.setProjects(employeeDTO.getProjects().stream().map(project -> DAOConverter.convertProject(project))
+		employee.setEmployeeName(employeeDto.getEmployeeName());
+		employee.setBirthday(employeeDto.getBirthday());
+		employee.setSex(employeeDto.getSex());
+		employee.setPhone(employeeDto.getPhone());
+		employee.setProjects(employeeDto.getProjects().stream().map(project -> DAOConverter.convertProject(project))
 				.collect(Collectors.toSet()));
-		employee.setDepartment(DAOConverter.convertDepartment(employeeDTO.getDepartment()));
+		employee.setDepartment(DAOConverter.convertDepartment(employeeDto.getDepartment()));
 
 		return DTOConverter.convertEmployee(employeeRepository.save(employee));
 	}
 
 	@Override
-	public void deleteEmployee(Integer departmentId, Integer employeeId) throws BadRequestException {
+	public void deleteEmployee(Integer departmentId, Integer employeeId) {
 		if (NumberUtils.isEmpty(departmentId)) {
-			throw new BadRequestException("Unidentified departmentId");
+			throw new BadRequestException("Unidentified departmentId!");
 		}
 
 		if (NumberUtils.isEmpty(employeeId)) {
-			throw new BadRequestException("Unidentified employeeId");
+			throw new BadRequestException("Unidentified employeeId!");
 		}
 
 		Department department = departmentRepository.findOne(departmentId);
 		if (Objects.isNull(department)) {
-			throw new BadRequestException("Department with " + departmentId + " is no exists.");
+			throw new NotFoundException("Department", "departmentId", departmentId);
 		}
 
 		Employee employee = employeeRepository.findOneByDepartmentId(departmentId, employeeId);
 		if (Objects.isNull(employee)) {
-			throw new BadRequestException("Employee with " + employeeId + " is no exists.");
+			throw new NotFoundException("Employee", "employeeId", employeeId);
 		}
 		employeeRepository.delete(employee);
 	}

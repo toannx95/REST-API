@@ -8,9 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.dto.EmployeeDTO;
+import com.api.dto.EmployeeDto;
 import com.api.entity.Employee;
 import com.api.exception.BadRequestException;
+import com.api.exception.NotFoundException;
 import com.api.repository.DepartmentRepository;
 import com.api.repository.EmployeeRepository;
 import com.api.service.EmployeeService;
@@ -28,7 +29,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private DepartmentRepository departmentRepository;
 
 	@Override
-	public List<EmployeeDTO> getAllEmployees() throws BadRequestException {
+	public List<EmployeeDto> getAllEmployees() {
 		List<Employee> employees = employeeRepository.findAll();
 		if (employees.isEmpty()) {
 			return new ArrayList<>();
@@ -37,55 +38,55 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public EmployeeDTO getEmployee(Integer employeeId) throws BadRequestException {
+	public EmployeeDto getEmployee(Integer employeeId) {
 		if (NumberUtils.isEmpty(employeeId)) {
-			throw new BadRequestException("Unidentified employeeId");
+			throw new BadRequestException("Unidentified employeeId!");
 		}
 
 		Employee employee = employeeRepository.findOne(employeeId);
 		if (Objects.isNull(employee)) {
-			throw new BadRequestException("Employee with " + employeeId + " is no exists.");
+			throw new NotFoundException("Employee", "employeeId", employeeId);
 		}
 		return DTOConverter.convertEmployee(employee);
 	}
 
 	@Override
-	public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) throws BadRequestException {
-		return DTOConverter.convertEmployee(employeeRepository.save(DAOConverter.convertEmployee(employeeDTO)));
+	public EmployeeDto createEmployee(EmployeeDto employeeDto) {
+		return DTOConverter.convertEmployee(employeeRepository.save(DAOConverter.convertEmployee(employeeDto)));
 	}
 
 	@Override
-	public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) throws BadRequestException {
-		Integer employeeId = employeeDTO.getEmployeeId();
+	public EmployeeDto updateEmployee(EmployeeDto employeeDto) {
+		Integer employeeId = employeeDto.getEmployeeId();
 
 		if (NumberUtils.isEmpty(employeeId)) {
-			throw new BadRequestException("Unidentified employeeId");
+			throw new BadRequestException("Unidentified employeeId!");
 		}
 
 		Employee employee = employeeRepository.findOne(employeeId);
 		if (Objects.isNull(employee)) {
-			throw new BadRequestException("Employee with " + employeeId + " is no longer exists.");
+			throw new NotFoundException("Employee", "employeeId", employeeId);
 		}
 
 		employee.setId(employeeId);
-		employee.setEmployeeName(employeeDTO.getEmployeeName());
-		employee.setBirthday(employeeDTO.getBirthday());
-		employee.setPhone(employeeDTO.getPhone());
-		employee.setSex(employeeDTO.getSex());
+		employee.setEmployeeName(employeeDto.getEmployeeName());
+		employee.setBirthday(employeeDto.getBirthday());
+		employee.setPhone(employeeDto.getPhone());
+		employee.setSex(employeeDto.getSex());
 		employee.setDepartment(
-				departmentRepository.findOne(DAOConverter.convertDepartment(employeeDTO.getDepartment()).getId()));
+				departmentRepository.findOne(DAOConverter.convertDepartment(employeeDto.getDepartment()).getId()));
 		return DTOConverter.convertEmployee(employeeRepository.save(employee));
 	}
 
 	@Override
-	public void deleteEmployee(Integer employeeId) throws BadRequestException {
+	public void deleteEmployee(Integer employeeId) {
 		if (NumberUtils.isEmpty(employeeId)) {
-			throw new BadRequestException("Unidentified employeeId");
+			throw new BadRequestException("Unidentified employeeId!");
 		}
 
 		Employee employee = employeeRepository.findOne(employeeId);
 		if (Objects.isNull(employee)) {
-			throw new BadRequestException("Employee with " + employeeId + " is no exists.");
+			throw new NotFoundException("Employee", "employeeId", employeeId);
 		}
 		employeeRepository.delete(employeeId);
 	}

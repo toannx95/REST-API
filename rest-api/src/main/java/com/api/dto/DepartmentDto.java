@@ -2,11 +2,9 @@ package com.api.dto;
 
 import java.util.Set;
 
-import org.springframework.hateoas.ResourceSupport;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class DepartmentDTO extends ResourceSupport {
+public class DepartmentDto {
 
 	// need create name for Id is "departmentId", if create name for Id is departId,
 	// it will not mapper for Id in entity
@@ -14,16 +12,16 @@ public class DepartmentDTO extends ResourceSupport {
 	private String departName;
 	private String description;
 	private String email;
-	private CompanyDTO company;
+	private CompanyDto company;
 	@JsonIgnore
-	private Set<EmployeeDTO> employees;
+	private Set<EmployeeDto> employees;
 
-	public DepartmentDTO() {
+	public DepartmentDto() {
 		super();
 	}
 
-	public DepartmentDTO(Integer departmentId, String departName, String description, String email, CompanyDTO company,
-			Set<EmployeeDTO> employees) {
+	public DepartmentDto(Integer departmentId, String departName, String description, String email, CompanyDto company,
+			Set<EmployeeDto> employees) {
 		super();
 		this.departmentId = departmentId;
 		this.departName = departName;
@@ -65,19 +63,19 @@ public class DepartmentDTO extends ResourceSupport {
 		this.email = email;
 	}
 
-	public CompanyDTO getCompany() {
+	public CompanyDto getCompany() {
 		return company;
 	}
 
-	public void setCompany(CompanyDTO company) {
+	public void setCompany(CompanyDto company) {
 		this.company = company;
 	}
 
-	public Set<EmployeeDTO> getEmployees() {
+	public Set<EmployeeDto> getEmployees() {
 		return employees;
 	}
 
-	public void setEmployees(Set<EmployeeDTO> employees) {
+	public void setEmployees(Set<EmployeeDto> employees) {
 		this.employees = employees;
 	}
 

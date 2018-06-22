@@ -29,7 +29,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.api.dto.DomainDTO;
+import com.api.controller.DomainController;
+import com.api.dto.DomainDto;
 import com.api.service.DomainService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -60,9 +61,9 @@ public class DomainControllerTest {
 
 	@Test
 	public void testGetAllDomains() throws Exception {
-		DomainDTO domainA = new DomainDTO(1, "Domain A");
-		DomainDTO domainB = new DomainDTO(2, "Domain B");
-		List<DomainDTO> domainDTOs = Arrays.asList(domainA, domainB);
+		DomainDto domainA = new DomainDto(1, "Domain A");
+		DomainDto domainB = new DomainDto(2, "Domain B");
+		List<DomainDto> domainDTOs = Arrays.asList(domainA, domainB);
 
 		when(domainService.getAllDomains()).thenReturn(domainDTOs);
 		mockMvc.perform(get("/domains"))
@@ -80,7 +81,7 @@ public class DomainControllerTest {
 
 	@Test
 	public void testGetDomain() throws Exception {
-		DomainDTO domain = new DomainDTO(1, "Domain A");
+		DomainDto domain = new DomainDto(1, "Domain A");
 
 		when(domainService.getDomain(domain.getDomainId())).thenReturn(domain);
 		mockMvc.perform(get("/domains/{id}", domain.getDomainId()))
@@ -96,7 +97,7 @@ public class DomainControllerTest {
 
 	@Test
 	public void testCreateDomain() throws Exception {
-		DomainDTO domain = new DomainDTO("Domain A");
+		DomainDto domain = new DomainDto("Domain A");
 		
 		when(domainService.createDomain(domain)).thenReturn(domain);
 		mockMvc.perform(post("/domains")
@@ -113,7 +114,7 @@ public class DomainControllerTest {
 	
 	@Test
 	public void testUpdateDomain() throws Exception {
-		DomainDTO domain = new DomainDTO(1, "Domain A");
+		DomainDto domain = new DomainDto(1, "Domain A");
 		
 		when(domainService.updateDomain(domain)).thenReturn(domain);
 		mockMvc.perform(put("/domains")
@@ -131,7 +132,7 @@ public class DomainControllerTest {
 	
 	@Test
 	public void testDeleteDomain() throws Exception {
-		DomainDTO domain = new DomainDTO(1, "Domain A");
+		DomainDto domain = new DomainDto(1, "Domain A");
 		
 		doNothing().when(domainService).deleteDomain(domain.getDomainId());
 		mockMvc.perform(delete("/domains/{id}", domain.getDomainId()))

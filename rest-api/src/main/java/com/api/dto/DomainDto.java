@@ -2,33 +2,31 @@ package com.api.dto;
 
 import java.util.Set;
 
-import org.springframework.hateoas.ResourceSupport;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class DomainDTO extends ResourceSupport {
+public class DomainDto {
 
 	private Integer domainId;
 	private String domainName;
 	@JsonIgnore
-	private Set<CompanyDTO> companies;
+	private Set<CompanyDto> companies;
 
-	public DomainDTO() {
+	public DomainDto() {
 		super();
 	}
 
-	public DomainDTO(String domainName) {
+	public DomainDto(String domainName) {
 		super();
 		this.domainName = domainName;
 	}
 
-	public DomainDTO(Integer domainId, String domainName) {
+	public DomainDto(Integer domainId, String domainName) {
 		super();
 		this.domainId = domainId;
 		this.domainName = domainName;
 	}
 
-	public DomainDTO(Integer domainId, String domainName, Set<CompanyDTO> companies) {
+	public DomainDto(Integer domainId, String domainName, Set<CompanyDto> companies) {
 		super();
 		this.domainId = domainId;
 		this.domainName = domainName;
@@ -51,11 +49,11 @@ public class DomainDTO extends ResourceSupport {
 		this.domainName = domainName;
 	}
 
-	public Set<CompanyDTO> getCompanies() {
+	public Set<CompanyDto> getCompanies() {
 		return companies;
 	}
 
-	public void setCompanies(Set<CompanyDTO> companies) {
+	public void setCompanies(Set<CompanyDto> companies) {
 		this.companies = companies;
 	}
 

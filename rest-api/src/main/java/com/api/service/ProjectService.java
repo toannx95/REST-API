@@ -2,19 +2,18 @@ package com.api.service;
 
 import java.util.List;
 
-import com.api.dto.ProjectDTO;
-import com.api.exception.BadRequestException;
+import com.api.dto.ProjectDto;
 
 public interface ProjectService {
 
-	List<ProjectDTO> getAllProjects() throws BadRequestException;
+	List<ProjectDto> getAllProjects();
 
-	ProjectDTO getProject(Integer projectId) throws BadRequestException;
+	ProjectDto getProject(Integer projectId);
 
-	ProjectDTO createProject(ProjectDTO projectDTO) throws BadRequestException;
+	ProjectDto createProject(ProjectDto projectDto);
 
-	ProjectDTO updateProject(ProjectDTO projectDTO) throws BadRequestException;
+	ProjectDto updateProject(ProjectDto projectDto);
 
-	void deleteProject(Integer projectId) throws BadRequestException;
+	void deleteProject(Integer projectId);
 
 }

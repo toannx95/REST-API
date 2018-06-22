@@ -8,11 +8,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.dto.CompanyDTO;
-import com.api.dto.DepartmentDTO;
+import com.api.dto.CompanyDto;
+import com.api.dto.DepartmentDto;
 import com.api.entity.Company;
 import com.api.entity.Department;
 import com.api.exception.BadRequestException;
+import com.api.exception.NotFoundException;
 import com.api.repository.CompanyRepository;
 import com.api.repository.DepartmentRepository;
 import com.api.service.CompanyService;
@@ -30,7 +31,7 @@ public class CompanyServiceImpl implements CompanyService {
 	private DepartmentRepository departmentRepository;
 
 	@Override
-	public List<CompanyDTO> getAllCompanies() {
+	public List<CompanyDto> getAllCompanies() {
 		List<Company> companies = companyRepository.findAll();
 		if (companies.isEmpty()) {
 			return new ArrayList<>();
@@ -39,48 +40,48 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public CompanyDTO getCompany(Integer companyId) throws BadRequestException {
+	public CompanyDto getCompany(Integer companyId) {
 		if (NumberUtils.isEmpty(companyId)) {
-			throw new BadRequestException("Unidentified companyId.");
+			throw new BadRequestException("Unidentified companyId!");
 		}
 
 		Company company = companyRepository.findOne(companyId);
 		if (Objects.isNull(company)) {
-			throw new BadRequestException("Company with " + companyId + " is no exists.");
+			throw new NotFoundException("Company", "companyId", companyId);
 		}
 		return DTOConverter.convertCompany(company);
 	}
 
 	@Override
-	public CompanyDTO createCompany(CompanyDTO companyDTO) {
-		return DTOConverter.convertCompany(companyRepository.save(DAOConverter.convertCompany(companyDTO)));
+	public CompanyDto createCompany(CompanyDto companyDto) {
+		return DTOConverter.convertCompany(companyRepository.save(DAOConverter.convertCompany(companyDto)));
 	}
 
 	@Override
-	public CompanyDTO updateCompany(CompanyDTO companyDTO) throws BadRequestException {
-		Integer companyId = companyDTO.getCompanyId();
+	public CompanyDto updateCompany(CompanyDto companyDto) {
+		Integer companyId = companyDto.getCompanyId();
 		if (NumberUtils.isEmpty(companyId)) {
-			throw new BadRequestException("Unidentified companyId.");
+			throw new BadRequestException("Unidentified companyId!");
 		}
 
 		Company company = companyRepository.findOne(companyId);
 		if (Objects.isNull(company)) {
-			throw new BadRequestException("Company with " + companyId + " is no longer exists.");
+			throw new NotFoundException("Company", "companyId", companyId);
 		}
 
 		company.setId(companyId);
-		company.setCompanyName(companyDTO.getCompanyName());
-		company.setUrl(companyDTO.getUrl());
-		company.setPhone(companyDTO.getPhone());
-		company.setDomain(DAOConverter.convertDomain(companyDTO.getDomain()));
-		company.setLayout(DAOConverter.convertLayout(companyDTO.getLayout()));
+		company.setCompanyName(companyDto.getCompanyName());
+		company.setUrl(companyDto.getUrl());
+		company.setPhone(companyDto.getPhone());
+		company.setDomain(DAOConverter.convertDomain(companyDto.getDomain()));
+		company.setLayout(DAOConverter.convertLayout(companyDto.getLayout()));
 		return DTOConverter.convertCompany(companyRepository.save(company));
 	}
 
 	@Override
-	public void deleteCompany(Integer companyId) throws BadRequestException {
+	public void deleteCompany(Integer companyId) {
 		if (NumberUtils.isEmpty(companyId)) {
-			throw new BadRequestException("Unidentified companyId.");
+			throw new BadRequestException("Unidentified companyId!");
 		}
 
 		Company company = companyRepository.findOne(companyId);
@@ -91,7 +92,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public List<DepartmentDTO> getAllDepartments(Integer companyId) throws BadRequestException {
+	public List<DepartmentDto> getAllDepartments(Integer companyId) {
 		List<Department> departments = departmentRepository.findAllByCompanyId(companyId);
 		if (departments.isEmpty()) {
 			return new ArrayList<>();
@@ -101,84 +102,84 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public DepartmentDTO getDepartment(Integer companyId, Integer departmentId) throws BadRequestException {
+	public DepartmentDto getDepartment(Integer companyId, Integer departmentId) {
 		if (NumberUtils.isEmpty(companyId)) {
-			throw new BadRequestException("Unidentified companyId.");
+			throw new BadRequestException("Unidentified companyId!");
 		}
 
 		if (NumberUtils.isEmpty(departmentId)) {
-			throw new BadRequestException("Unidentified departmentId.");
+			throw new BadRequestException("Unidentified departmentId!");
 		}
 
 		Company company = companyRepository.findOne(companyId);
 		if (Objects.isNull(company)) {
-			throw new BadRequestException("Company with " + companyId + " is no exists.");
+			throw new NotFoundException("Company", "companyId", companyId);
 		}
 
 		Department department = departmentRepository.findOneByCompanyId(companyId, departmentId);
 		if (Objects.isNull(department)) {
-			throw new BadRequestException("Department with " + departmentId + " is no exists.");
+			throw new NotFoundException("Department", "departmentId", departmentId);
 		}
 		return DTOConverter.convertDepartment(department);
 	}
 
 	@Override
-	public DepartmentDTO createDepartment(Integer companyId, DepartmentDTO departmentDTO) throws BadRequestException {
+	public DepartmentDto createDepartment(Integer companyId, DepartmentDto departmentDto) {
 		if (NumberUtils.isEmpty(companyId)) {
-			throw new BadRequestException("Unidentified companyId.");
+			throw new BadRequestException("Unidentified companyId!");
 		}
 
 		Company company = companyRepository.findOne(companyId);
 		if (Objects.isNull(company)) {
-			throw new BadRequestException("Company with " + companyId + " is no exists.");
+			throw new NotFoundException("Company", "companyId", companyId);
 		}
 
-		departmentDTO.setCompany(DTOConverter.convertCompany(company));
-		return DTOConverter.convertDepartment(departmentRepository.save(DAOConverter.convertDepartment(departmentDTO)));
+		departmentDto.setCompany(DTOConverter.convertCompany(company));
+		return DTOConverter.convertDepartment(departmentRepository.save(DAOConverter.convertDepartment(departmentDto)));
 	}
 
 	@Override
-	public DepartmentDTO updateDeparment(Integer companyId, DepartmentDTO departmentDTO) throws BadRequestException {
+	public DepartmentDto updateDeparment(Integer companyId, DepartmentDto departmentDto) {
 		if (NumberUtils.isEmpty(companyId)) {
-			throw new BadRequestException("Unidentified companyId.");
+			throw new BadRequestException("Unidentified companyId!");
 		}
 
 		Company company = companyRepository.findOne(companyId);
 		if (Objects.isNull(company)) {
-			throw new BadRequestException("Company with " + companyId + " is no exists.");
+			throw new NotFoundException("Company", "companyId", companyId);
 		}
 
-		Integer departmentId = departmentDTO.getDepartmentId();
+		Integer departmentId = departmentDto.getDepartmentId();
 		Department department = departmentRepository.findOne(departmentId);
 		if (Objects.isNull(department)) {
-			throw new BadRequestException("Department with " + departmentId + " is no longer exists.");
+			throw new NotFoundException("Department", "departmentId", departmentId);
 		}
 
-		department.setDepartName(departmentDTO.getDepartName());
-		department.setDescription(departmentDTO.getDescription());
-		department.setEmail(departmentDTO.getEmail());
-		department.setCompany(DAOConverter.convertCompany(departmentDTO.getCompany()));
+		department.setDepartName(departmentDto.getDepartName());
+		department.setDescription(departmentDto.getDescription());
+		department.setEmail(departmentDto.getEmail());
+		department.setCompany(DAOConverter.convertCompany(departmentDto.getCompany()));
 		return DTOConverter.convertDepartment(departmentRepository.save(department));
 	}
 
 	@Override
-	public void deleteDepartment(Integer companyId, Integer departmentId) throws BadRequestException {
+	public void deleteDepartment(Integer companyId, Integer departmentId) {
 		if (NumberUtils.isEmpty(companyId)) {
-			throw new BadRequestException("Unidentified companyId.");
+			throw new BadRequestException("Unidentified companyId!");
 		}
 
 		if (NumberUtils.isEmpty(departmentId)) {
-			throw new BadRequestException("Unidentified departmentId.");
+			throw new BadRequestException("Unidentified departmentId!");
 		}
 
 		Company company = companyRepository.findOne(companyId);
 		if (Objects.isNull(company)) {
-			throw new BadRequestException("Company with " + companyId + " is no exists.");
+			throw new NotFoundException("Company", "companyId", companyId);
 		}
 
 		Department department = departmentRepository.findOneByCompanyId(companyId, departmentId);
 		if (Objects.isNull(department)) {
-			throw new BadRequestException("Department with " + departmentId + " is no exists.");
+			throw new NotFoundException("Department", "departmentId", departmentId);
 		}
 		departmentRepository.delete(department);
 	}

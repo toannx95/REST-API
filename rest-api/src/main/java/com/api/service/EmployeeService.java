@@ -2,19 +2,18 @@ package com.api.service;
 
 import java.util.List;
 
-import com.api.dto.EmployeeDTO;
-import com.api.exception.BadRequestException;
+import com.api.dto.EmployeeDto;
 
 public interface EmployeeService {
 
-	List<EmployeeDTO> getAllEmployees() throws BadRequestException;
+	List<EmployeeDto> getAllEmployees();
 
-	EmployeeDTO getEmployee(Integer employeeId) throws BadRequestException;
+	EmployeeDto getEmployee(Integer employeeId);
 
-	EmployeeDTO createEmployee(EmployeeDTO employeeDTO) throws BadRequestException;
+	EmployeeDto createEmployee(EmployeeDto employeeDto);
 
-	EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) throws BadRequestException;
+	EmployeeDto updateEmployee(EmployeeDto employeeDto);
 
-	void deleteEmployee(Integer employeeId) throws BadRequestException;
+	void deleteEmployee(Integer employeeId);
 
 }

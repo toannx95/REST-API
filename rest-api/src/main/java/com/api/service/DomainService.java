@@ -2,19 +2,18 @@ package com.api.service;
 
 import java.util.List;
 
-import com.api.dto.DomainDTO;
-import com.api.exception.BadRequestException;
+import com.api.dto.DomainDto;
 
 public interface DomainService {
 
-	List<DomainDTO> getAllDomains() throws BadRequestException;
+	List<DomainDto> getAllDomains();
 
-	DomainDTO getDomain(Integer domainId) throws BadRequestException;
+	DomainDto getDomain(Integer domainId);
 
-	DomainDTO createDomain(DomainDTO domainDTO) throws BadRequestException;
+	DomainDto createDomain(DomainDto domainDto);
 
-	DomainDTO updateDomain(DomainDTO domainDTO) throws BadRequestException;
+	DomainDto updateDomain(DomainDto domainDto);
 
-	void deleteDomain(Integer domainId) throws BadRequestException;
+	void deleteDomain(Integer domainId);
 
 }

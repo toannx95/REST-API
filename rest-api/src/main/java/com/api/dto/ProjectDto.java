@@ -2,25 +2,23 @@ package com.api.dto;
 
 import java.util.Set;
 
-import org.springframework.hateoas.ResourceSupport;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class ProjectDTO extends ResourceSupport {
+public class ProjectDto {
 
 	private Integer projectId;
 	private String projectName;
 	private String status;
 	private String description;
 	@JsonIgnore
-	private Set<EmployeeDTO> employees;
+	private Set<EmployeeDto> employees;
 
-	public ProjectDTO() {
+	public ProjectDto() {
 		super();
 	}
 
-	public ProjectDTO(Integer projectId, String projectName, String status, String description,
-			Set<EmployeeDTO> employees) {
+	public ProjectDto(Integer projectId, String projectName, String status, String description,
+			Set<EmployeeDto> employees) {
 		super();
 		this.projectId = projectId;
 		this.projectName = projectName;
@@ -61,11 +59,11 @@ public class ProjectDTO extends ResourceSupport {
 		this.description = description;
 	}
 
-	public Set<EmployeeDTO> getEmployees() {
+	public Set<EmployeeDto> getEmployees() {
 		return employees;
 	}
 
-	public void setEmployees(Set<EmployeeDTO> employees) {
+	public void setEmployees(Set<EmployeeDto> employees) {
 		this.employees = employees;
 	}
 

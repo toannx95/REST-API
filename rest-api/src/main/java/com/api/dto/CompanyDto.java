@@ -2,27 +2,25 @@ package com.api.dto;
 
 import java.util.Set;
 
-import org.springframework.hateoas.ResourceSupport;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class CompanyDTO extends ResourceSupport {
+public class CompanyDto {
 
 	private Integer companyId;
 	private String companyName;
 	private String url;
 	private int phone;
-	private DomainDTO domain;
-	private LayoutDTO layout;
+	private DomainDto domain;
+	private LayoutDto layout;
 	@JsonIgnore
-	private Set<DepartmentDTO> departments;
+	private Set<DepartmentDto> departments;
 
-	public CompanyDTO() {
+	public CompanyDto() {
 		super();
 	}
 
-	public CompanyDTO(Integer companyId, String companyName, String url, int phone, DomainDTO domain, LayoutDTO layout,
-			Set<DepartmentDTO> departments) {
+	public CompanyDto(Integer companyId, String companyName, String url, int phone, DomainDto domain, LayoutDto layout,
+			Set<DepartmentDto> departments) {
 		super();
 		this.companyId = companyId;
 		this.companyName = companyName;
@@ -65,27 +63,27 @@ public class CompanyDTO extends ResourceSupport {
 		this.phone = phone;
 	}
 
-	public DomainDTO getDomain() {
+	public DomainDto getDomain() {
 		return domain;
 	}
 
-	public void setDomain(DomainDTO domain) {
+	public void setDomain(DomainDto domain) {
 		this.domain = domain;
 	}
 
-	public LayoutDTO getLayout() {
+	public LayoutDto getLayout() {
 		return layout;
 	}
 
-	public void setLayout(LayoutDTO layout) {
+	public void setLayout(LayoutDto layout) {
 		this.layout = layout;
 	}
 
-	public Set<DepartmentDTO> getDepartments() {
+	public Set<DepartmentDto> getDepartments() {
 		return departments;
 	}
 
-	public void setDepartments(Set<DepartmentDTO> departments) {
+	public void setDepartments(Set<DepartmentDto> departments) {
 		this.departments = departments;
 	}
 

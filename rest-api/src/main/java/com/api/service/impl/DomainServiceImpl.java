@@ -8,9 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.dto.DomainDTO;
+import com.api.dto.DomainDto;
 import com.api.entity.Domain;
 import com.api.exception.BadRequestException;
+import com.api.exception.NotFoundException;
 import com.api.repository.DomainRepository;
 import com.api.service.DomainService;
 import com.api.util.NumberUtils;
@@ -24,7 +25,7 @@ public class DomainServiceImpl implements DomainService {
 	private DomainRepository domainRepository;
 
 	@Override
-	public List<DomainDTO> getAllDomains() throws BadRequestException {
+	public List<DomainDto> getAllDomains() {
 		List<Domain> domains = domainRepository.findAll();
 		if (domains.isEmpty()) {
 			return new ArrayList<>();
@@ -33,49 +34,49 @@ public class DomainServiceImpl implements DomainService {
 	}
 
 	@Override
-	public DomainDTO getDomain(Integer domainId) throws BadRequestException {
+	public DomainDto getDomain(Integer domainId) {
 		if (NumberUtils.isEmpty(domainId)) {
-			throw new BadRequestException("Unidentified companyId");
+			throw new BadRequestException("Unidentified domainId!");
 		}
 
 		Domain domain = domainRepository.findOne(domainId);
 		if (Objects.isNull(domain)) {
-			throw new BadRequestException("Domain with " + domainId + " is no exists.");
+			throw new NotFoundException("Domain", "domainId", domainId);
 		}
 		return DTOConverter.convertDomain(domain);
 	}
 
 	@Override
-	public DomainDTO createDomain(DomainDTO domainDTO) throws BadRequestException {
-		return DTOConverter.convertDomain(domainRepository.save(DAOConverter.convertDomain(domainDTO)));
+	public DomainDto createDomain(DomainDto domainDto) {
+		return DTOConverter.convertDomain(domainRepository.save(DAOConverter.convertDomain(domainDto)));
 	}
 
 	@Override
-	public DomainDTO updateDomain(DomainDTO domainDTO) throws BadRequestException {
-		Integer domainId = domainDTO.getDomainId();
+	public DomainDto updateDomain(DomainDto domainDto) {
+		Integer domainId = domainDto.getDomainId();
 		if (NumberUtils.isEmpty(domainId)) {
-			throw new BadRequestException("Unidentified domainId.");
+			throw new BadRequestException("Unidentified domainId!");
 		}
 
 		Domain domain = domainRepository.findOne(domainId);
 		if (Objects.isNull(domain)) {
-			throw new BadRequestException("Domain with " + domainId + " is no longer exists.");
+			throw new NotFoundException("Domain", "domainId", domainId);
 		}
 
 		domain.setId(domainId);
-		domain.setDomainName(domainDTO.getDomainName());
+		domain.setDomainName(domainDto.getDomainName());
 		return DTOConverter.convertDomain(domainRepository.save(domain));
 	}
 
 	@Override
-	public void deleteDomain(Integer domainId) throws BadRequestException {
+	public void deleteDomain(Integer domainId) {
 		if (NumberUtils.isEmpty(domainId)) {
-			throw new BadRequestException("Unidentified domainId.");
+			throw new BadRequestException("Unidentified domainId!");
 		}
 
 		Domain domain = domainRepository.findOne(domainId);
 		if (Objects.isNull(domain)) {
-			throw new BadRequestException("Domain with " + domainId + " is no exists.");
+			throw new NotFoundException("Domain", "domainId", domainId);
 		}
 		domainRepository.delete(domainId);
 	}

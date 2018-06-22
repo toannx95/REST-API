@@ -2,30 +2,29 @@ package com.api.service;
 
 import java.util.List;
 
-import com.api.dto.CompanyDTO;
-import com.api.dto.DepartmentDTO;
-import com.api.exception.BadRequestException;
+import com.api.dto.CompanyDto;
+import com.api.dto.DepartmentDto;
 
 public interface CompanyService {
 
-	List<CompanyDTO> getAllCompanies() throws BadRequestException;
+	List<CompanyDto> getAllCompanies();
 
-	CompanyDTO getCompany(Integer companyId) throws BadRequestException;
+	CompanyDto getCompany(Integer companyId);
 
-	CompanyDTO createCompany(CompanyDTO companyDTO) throws BadRequestException;
+	CompanyDto createCompany(CompanyDto companyDto);
 
-	CompanyDTO updateCompany(CompanyDTO companyDTO) throws BadRequestException;
+	CompanyDto updateCompany(CompanyDto companyDto);
 
-	void deleteCompany(Integer companyId) throws BadRequestException;
+	void deleteCompany(Integer companyId);
 
-	List<DepartmentDTO> getAllDepartments(Integer companyId) throws BadRequestException;
+	List<DepartmentDto> getAllDepartments(Integer companyId);
 
-	DepartmentDTO getDepartment(Integer companyId, Integer departmentId) throws BadRequestException;
+	DepartmentDto getDepartment(Integer companyId, Integer departmentId);
 
-	DepartmentDTO createDepartment(Integer companyId, DepartmentDTO departmentDTO) throws BadRequestException;
+	DepartmentDto createDepartment(Integer companyId, DepartmentDto departmentDto);
 
-	DepartmentDTO updateDeparment(Integer companyId, DepartmentDTO departmentDTO) throws BadRequestException;
+	DepartmentDto updateDeparment(Integer companyId, DepartmentDto departmentDto);
 
-	void deleteDepartment(Integer companyId, Integer departmentId) throws BadRequestException;
+	void deleteDepartment(Integer companyId, Integer departmentId);
 
 }

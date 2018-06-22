@@ -3,24 +3,22 @@ package com.api.dto;
 import java.util.Date;
 import java.util.Set;
 
-import org.springframework.hateoas.ResourceSupport;
-
-public class EmployeeDTO extends ResourceSupport {
+public class EmployeeDto {
 
 	private Integer employeeId;
 	private String employeeName;
 	private Date birthday;
 	private int sex;
 	private int phone;
-	private Set<ProjectDTO> projects;
-	private DepartmentDTO department;
+	private Set<ProjectDto> projects;
+	private DepartmentDto department;
 
-	public EmployeeDTO() {
+	public EmployeeDto() {
 		super();
 	}
 
-	public EmployeeDTO(Integer employeeId, String employeeName, Date birthday, int sex, int phone,
-			Set<ProjectDTO> projects, DepartmentDTO department) {
+	public EmployeeDto(Integer employeeId, String employeeName, Date birthday, int sex, int phone,
+			Set<ProjectDto> projects, DepartmentDto department) {
 		super();
 		this.employeeId = employeeId;
 		this.employeeName = employeeName;
@@ -71,19 +69,19 @@ public class EmployeeDTO extends ResourceSupport {
 		this.phone = phone;
 	}
 
-	public Set<ProjectDTO> getProjects() {
+	public Set<ProjectDto> getProjects() {
 		return projects;
 	}
 
-	public void setProjects(Set<ProjectDTO> projects) {
+	public void setProjects(Set<ProjectDto> projects) {
 		this.projects = projects;
 	}
 
-	public DepartmentDTO getDepartment() {
+	public DepartmentDto getDepartment() {
 		return department;
 	}
 
-	public void setDepartment(DepartmentDTO department) {
+	public void setDepartment(DepartmentDto department) {
 		this.department = department;
 	}
 

@@ -8,9 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.dto.LayoutDTO;
+import com.api.dto.LayoutDto;
 import com.api.entity.Layout;
 import com.api.exception.BadRequestException;
+import com.api.exception.NotFoundException;
 import com.api.repository.LayoutRepository;
 import com.api.service.LayoutService;
 import com.api.util.NumberUtils;
@@ -24,7 +25,7 @@ public class LayoutServiceImpl implements LayoutService {
 	private LayoutRepository layoutRepository;
 
 	@Override
-	public List<LayoutDTO> getAllLayouts() throws BadRequestException {
+	public List<LayoutDto> getAllLayouts() {
 		List<Layout> layouts = layoutRepository.findAll();
 		if (layouts.isEmpty()) {
 			return new ArrayList<>();
@@ -33,49 +34,49 @@ public class LayoutServiceImpl implements LayoutService {
 	}
 
 	@Override
-	public LayoutDTO getLayout(Integer layoutId) throws BadRequestException {
+	public LayoutDto getLayout(Integer layoutId) {
 		if (NumberUtils.isEmpty(layoutId)) {
-			throw new BadRequestException("Unidentified layoutId");
+			throw new BadRequestException("Unidentified layoutId!");
 		}
 
 		Layout layout = layoutRepository.findOne(layoutId);
 		if (Objects.isNull(layout)) {
-			throw new BadRequestException("Layout with " + layoutId + " is no exists.");
+			throw new NotFoundException("Layout", "layoutId", layoutId);
 		}
 		return DTOConverter.convertLayout(layout);
 	}
 
 	@Override
-	public LayoutDTO createLayout(LayoutDTO layoutDTO) throws BadRequestException {
-		return DTOConverter.convertLayout(layoutRepository.save(DAOConverter.convertLayout(layoutDTO)));
+	public LayoutDto createLayout(LayoutDto layoutDto) {
+		return DTOConverter.convertLayout(layoutRepository.save(DAOConverter.convertLayout(layoutDto)));
 	}
 
 	@Override
-	public LayoutDTO updateLayout(LayoutDTO layoutDTO) throws BadRequestException {
-		Integer layoutId = layoutDTO.getLayoutId();
+	public LayoutDto updateLayout(LayoutDto layoutDto) {
+		Integer layoutId = layoutDto.getLayoutId();
 		if (NumberUtils.isEmpty(layoutId)) {
-			throw new BadRequestException("Unidentified layoutId");
+			throw new BadRequestException("Unidentified layoutId!");
 		}
 
 		Layout layout = layoutRepository.findOne(layoutId);
 		if (Objects.isNull(layout)) {
-			throw new BadRequestException("Layout with " + layoutId + " is no longer exists.");
+			throw new NotFoundException("Layout", "layoutId", layoutId);
 		}
 
 		layout.setId(layoutId);
-		layout.setLayoutName(layoutDTO.getLayoutName());
+		layout.setLayoutName(layoutDto.getLayoutName());
 		return DTOConverter.convertLayout(layoutRepository.save(layout));
 	}
 
 	@Override
-	public void deleteLayout(Integer layoutId) throws BadRequestException {
+	public void deleteLayout(Integer layoutId) {
 		if (NumberUtils.isEmpty(layoutId)) {
-			throw new BadRequestException("Unidentified layoutId");
+			throw new BadRequestException("Unidentified layoutId!");
 		}
 
 		Layout layout = layoutRepository.findOne(layoutId);
 		if (Objects.isNull(layout)) {
-			throw new BadRequestException("Layout with " + layoutId + " is no exists.");
+			throw new NotFoundException("Layout", "layoutId", layoutId);
 		}
 		layoutRepository.delete(layoutId);
 	}
