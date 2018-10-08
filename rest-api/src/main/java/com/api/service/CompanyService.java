@@ -27,4 +27,8 @@ public interface CompanyService {
 
 	void deleteDepartment(Integer companyId, Integer departmentId);
 
+	List<CompanyDto> findByNameStartingWith(String companyName);
+
+	List<CompanyDto> findByNameContainsWith(String companyName);
+	
 }

@@ -5,6 +5,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +39,12 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Autowired
 	private DepartmentRepository departmentRepository;
+
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Override
 	public List<CompanyDto> getAllCompanies() {
@@ -182,6 +198,31 @@ public class CompanyServiceImpl implements CompanyService {
 			throw new NotFoundException("Department", "departmentId", departmentId);
 		}
 		departmentRepository.delete(department);
+	}
+
+	// query using CriteriaBuilder
+	@Override
+	public List<CompanyDto> findByNameStartingWith(String companyName) {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Company> query = builder.createQuery(Company.class);
+		Root<Company> root = query.from(Company.class);
+
+		query.where(builder.like(root.get("companyName"), companyName + "%"));
+
+		List<Company> companies = entityManager.createQuery(query).getResultList();
+		return companies.stream().map(company -> DTOConverter.convertCompany(company)).collect(Collectors.toList());
+	}
+
+	// query using Criteria
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CompanyDto> findByNameContainsWith(String companyName) {
+		Session session = sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(Company.class);
+		criteria.add(Restrictions.like("companyName", "%" + companyName + "%"));
+
+		List<Company> companies = criteria.list();
+		return companies.stream().map(company -> DTOConverter.convertCompany(company)).collect(Collectors.toList());
 	}
 
 }
